@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.User;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -22,7 +22,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Long id) {
-        return usersDao.getUser(id);
+        return usersDao.getUserById(id);
+    }
+
+    @Override
+    public User getUser(String email) {
+        return usersDao.getUserByEmail(email);
     }
 
     @Transactional

@@ -18,27 +18,30 @@ public class WebSecurityConfig {
         this.successUserHandler = successUserHandler;
     }
 
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest().authenticated()
-                        .and()
-                )
-                .formLogin().successHandler(successUserHandler)
-                .permitAll()
+                    .authorizeHttpRequests()
+                    .requestMatchers("/**").hasRole("USER")
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                .and()
+                    .formLogin().successHandler(successUserHandler)
+                .and()
+                .logout()
+                .permitAll();
+        return http.build();
+    }
 
 
-                    .antMatchers("/", "/index").permitAll()
+/*                    .antMatchers("/", "/index").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin().successHandler(successUserHandler)
                     .permitAll()
                 .and()
                     .logout()
-                    .permitAll();
+                    .permitAll();*/
 
-        return http.build();
-    }
 
     // аутентификация inMemory
     @Bean

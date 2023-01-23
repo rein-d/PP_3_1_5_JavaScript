@@ -22,13 +22,16 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                     .authorizeHttpRequests()
-                    .requestMatchers("/**").hasRole("USER")
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/", "/index").permitAll()
+                    .anyRequest().authenticated()
+//                    .requestMatchers("/**").hasRole("USER")
+//                    .requestMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                     .formLogin().successHandler(successUserHandler)
+                    .permitAll()
                 .and()
-                .logout()
-                .permitAll();
+                    .logout()
+                    .permitAll();
         return http.build();
     }
 

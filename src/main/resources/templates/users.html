@@ -15,12 +15,12 @@
     <div class="row">
       <h1>User-table</h1>
     </div>
-    <div>
-      <p>Logged user: <span th:text="${principal.getName()}"></span> </p>
-    </div>
+<!--    <div>-->
+<!--      <p>Logged user: <span th:text="${principal.getName()}"></span> </p>-->
+<!--    </div>-->
     <div class="row">
       <div class = "col-lg-3">
-        <a class="btn btn-primary" th:href="@{/users/create_user}" role="button">Add new user</a>
+        <a class="btn btn-primary" th:href="@{/users/create}" role="button">Add new user</a>
       </div>
     </div>
 
@@ -43,7 +43,7 @@
             <a th:href="@{/users/edit/{id}(id=${user.id})}"
             class="btn btn-primary">Edit</a>
 
-            <a th:href = "@{/users/{id}(id=${user.id})}"
+            <a th:href = "@{/users/delete/{id}(id=${user.id})}"
                class = "btn btn-danger">Delete</a>
           </td>
         </tr>

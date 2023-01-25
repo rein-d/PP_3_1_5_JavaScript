@@ -23,7 +23,7 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/admin/edit}">Edit User</a>
+        <a class="nav-link" th:href="@{/admin}">Edit User</a>
       </li>
     </ul>
   </div>
@@ -43,7 +43,7 @@
                     name = "firstName"
                     th:field = "*{firstName}"
                     class = "form-control"
-                    placeholder="Enter User First Name"
+                    placeholder="Enter new User First Name"
             />
           </div>
 
@@ -54,7 +54,29 @@
                     name = "lastName"
                     th:field = "*{lastName}"
                     class = "form-control"
-                    placeholder="Enter User Last Name"
+                    placeholder="Enter new User Last Name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label> User Age </label>
+            <input
+                    type="number"
+                    name="age"
+                    class="form-control"
+                    th:field="*{age}"
+                    placeholder="Enter Last Name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label> User Email </label>
+            <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    th:field="*{email}"
+                    placeholder="Enter Email"
             />
           </div>
 
@@ -62,10 +84,10 @@
             <label> User Email </label>
             <input
                     type = "text"
-                    name = "email"
-                    th:field = "*{email}"
+                    name = "password"
+                    th:field = "*{password}"
                     class = "form-control"
-                    placeholder="Enter User Email"
+                    placeholder="Enter new User Password"
             />
           </div>
 

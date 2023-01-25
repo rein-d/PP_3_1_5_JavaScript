@@ -11,86 +11,25 @@
   <title>User Details</title>
 </head>
 <body>
-<header>
-  <h1>Это мой сайт</h1>
-  <p>Он хороший</p>
-  <nav>
-    <ul>
-      <li><a href="index.html">Эта страница</a></li>
-      <li><a href="catalog.html">Другая страница</a></li>
-    </ul>
-  </nav>
-</header>
+
 <main>
-  <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <!-- Brand -->
-    <a class="navbar-brand" href="#">User Management System</a>
-
-    <!-- Toggler/collapsibe Button -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Navbar links -->
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/users}">User Details</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-  <br>
-  <br>
-  <div class = "container">
-    <div class = "row">
-      <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-        <h1 class = "text-center"> Update Student </h1>
-        <div class = "card-body">
-          <form th:action="@{/users/{id} (id=${user.id})}" th:object = "${user}" method="POST">
-            <div class ="form-group">
-              <label> User First Name </label>
-              <input
-                      type = "text"
-                      name = "firstName"
-                      th:field = "*{firstName}"
-                      class = "form-control"
-                      placeholder="Enter User First Name"
-              />
-            </div>
-
-            <div class ="form-group">
-              <label> User Last Name </label>
-              <input
-                      type = "text"
-                      name = "lastName"
-                      th:field = "*{lastName}"
-                      class = "form-control"
-                      placeholder="Enter User Last Name"
-              />
-            </div>
-
-            <div class ="form-group">
-              <label> User Email </label>
-              <input
-                      type = "text"
-                      name = "email"
-                      th:field = "*{email}"
-                      class = "form-control"
-                      placeholder="Enter User Email"
-              />
-            </div>
-
-            <div class = "box-footer">
-              <button type="submit" class = "btn btn-primary">
-                Submit
-              </button>
-            </div>
-          </form>
-
-        </div>
-      </div>
-    </div>
+  <div>
+    <table class="table table-dark table-striped">
+      <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>EMAIL</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user: ${users}">
+        <td th:text="${user.getFirstName()}"/>
+        <td th:text="${user.getLastName()}"/>
+        <td th:text="${user.getEmail()}"/>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </main>
 <footer>

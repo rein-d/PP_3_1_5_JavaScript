@@ -23,7 +23,7 @@
   <div class="collapse navbar-collapse" id="collapsibleNavbar">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/users}">Student Management</a>
+        <a class="nav-link" th:href="@{/admin/edit}">Edit User</a>
       </li>
     </ul>
   </div>
@@ -35,7 +35,7 @@
     <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
       <h1 class = "text-center"> Update User </h1>
       <div class = "card-body">
-        <form th:action="@{/users/edit/{id} (id=${user.id})}" th:object = "${user}" method="POST">
+        <form th:action="@{/admin/edit/{id} (id=${user.id})}" th:object = "${user}" method="POST">
           <div class ="form-group">
             <label> User First Name </label>
             <input

@@ -1,7 +1,9 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import jakarta.transaction.Transactional;
@@ -9,31 +11,26 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserDao usersDao;
+    private final UserRepository userRepository;
 
-    public UserServiceImpl(UserDao usersDao) {
-        this.usersDao = usersDao;
+    public UserServiceImpl(UserRepository usersDao) {
+        this.userRepository = usersDao;
     }
 
     @Override
     public List<User> getUsers() {
-        return usersDao.getAllUsers();
+        return userRepository.findAll();
     }
 
     @Override
     public User getUser(Long id) {
-        return usersDao.getUserById(id);
-    }
-
-    @Override
-    public User getUser(String email) {
-        return usersDao.getUserByEmail(email);
+        return userRepository.findById(id).get();
     }
 
     @Transactional
     @Override
     public void addUser(User user) {
-        usersDao.addUser(user);
+        userRepository.save(user);
     }
 
     @Transactional
@@ -44,12 +41,17 @@ public class UserServiceImpl implements UserService {
         existingUser.setFirstName(firstName);
         existingUser.setLastName(lastName);
         existingUser.setEmail(email);
-        usersDao.updateUser(existingUser);
+        userRepository.save(existingUser);
     }
 
     @Transactional
     @Override
     public void deleteUser(Long id) {
-        usersDao.deleteUser(id);
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.getUserByEmail(username);
     }
 }

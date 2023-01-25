@@ -20,7 +20,7 @@
 <!--    </div>-->
     <div class="row">
       <div class = "col-lg-3">
-        <a class="btn btn-primary" th:href="@{/users/create}" role="button">Add new user</a>
+        <a class="btn btn-primary" th:href="@{/admin/create}" role="button">Add new user</a>
       </div>
     </div>
 
@@ -40,16 +40,17 @@
           <td th:text="${user.getLastName()}"/>
           <td th:text="${user.getEmail()}"/>
           <td>
-            <a th:href="@{/users/edit/{id}(id=${user.id})}"
+            <a th:href="@{/admin/edit/{id}(id=${user.id})}"
             class="btn btn-primary">Edit</a>
 
-            <a th:href = "@{/users/delete/{id}(id=${user.id})}"
+            <a th:href = "@{/admin/delete/{id}(id=${user.id})}"
                class = "btn btn-danger">Delete</a>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
+
   </div>
 </body>
 </html>

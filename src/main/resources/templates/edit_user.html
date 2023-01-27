@@ -81,14 +81,27 @@
           </div>
 
           <div class ="form-group">
-            <label> User Email </label>
+            <label> Enter new User Password </label>
             <input
-                    type = "text"
+                    type = "password"
                     name = "password"
                     th:field = "*{password}"
                     class = "form-control"
                     placeholder="Enter new User Password"
             />
+          </div>
+
+          <div class="form-group">
+            <label> Roles:
+              <input
+                    type="checkbox"
+                    name="roles"
+                    th:each="role : ${allRoles}"
+                    th:text=" ${role.name} "
+                    th:value="${role.id}"
+                    th:field="*{roles}"
+              />
+            </label>
           </div>
 
           <div class = "box-footer">

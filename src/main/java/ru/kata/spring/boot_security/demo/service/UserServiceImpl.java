@@ -1,27 +1,26 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-
-import jakarta.transaction.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository usersDao) {
-        this.userRepository = usersDao;
-    }
+    private final RoleRepository roleRepository;
 
     @Override
     public List<User> getUsers() {
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.getReferenceById(id);
     }
 
     @Transactional
@@ -41,12 +40,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void saveUser(Long id, String firstName, String lastName, String email) {
+    public void saveUser(Long id, String firstName, String lastName, Integer age,
+                         String email, String password, List<Role> roles) {
         User existingUser = this.getUser(id);
+        if(roles.isEmpty()) {
+            roles.add(roleRepository.getRoleByName("USER"));
+        }
         existingUser.setId(id);
         existingUser.setFirstName(firstName);
         existingUser.setLastName(lastName);
+        existingUser.setAge(age);
         existingUser.setEmail(email);
+        existingUser.setPassword(password);
+        existingUser.setRoles(roles);
         userRepository.save(existingUser);
     }
 
@@ -59,15 +65,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.getUserByEmail(username);
+        User user = userRepository.getByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails
-                .User(user.getUsername(),user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return user;
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
+        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
     }
 }

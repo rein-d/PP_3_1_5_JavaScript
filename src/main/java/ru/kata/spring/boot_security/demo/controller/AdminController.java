@@ -28,6 +28,9 @@ public class AdminController {
     @PostMapping("/admin")
     public String addUser(@ModelAttribute("user") User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getRoles().isEmpty()) {
+            user.setRoles(roleRepository.getRolesByName("USER"));
+        }
         userService.addUser(user);
         return "redirect:/admin";
     }

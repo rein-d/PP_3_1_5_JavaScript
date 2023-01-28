@@ -3,10 +3,10 @@ package ru.kata.spring.boot_security.demo.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
-import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
@@ -23,6 +23,7 @@ public class Role implements GrantedAuthority {
     }
 
     @ManyToMany(mappedBy = "roles")
+    @ToString.Exclude
     private List<User> users;
 
     @Override

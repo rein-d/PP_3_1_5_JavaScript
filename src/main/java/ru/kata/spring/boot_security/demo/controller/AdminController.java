@@ -19,7 +19,7 @@ public class AdminController {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping(value = "/admin")
+    @GetMapping("/admin")
     public String listUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getUsers());
         model.addAttribute("principal", principal);
@@ -35,8 +35,8 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/admin/create")
-    public String addUsers(Model model) {
+    @GetMapping("/admin/create")
+    public String addUsers(Model model, Principal principal) {
         User user = new User();
         if (roleRepository.findAll().isEmpty()) {
             roleRepository.save(new Role("USER"));
@@ -44,13 +44,15 @@ public class AdminController {
         }
         model.addAttribute("user", user);
         model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("principal", principal);
         return "create_user";
     }
 
     @GetMapping("/admin/edit/{id}")
-    public String editUser(@PathVariable Long id, Model model) {
+    public String editUser(@PathVariable Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUser(id));
         model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("principal", principal);
         return "edit_user";
     }
 

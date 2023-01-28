@@ -17,14 +17,16 @@ public class UserController {
         this.userService = userService;
     }
     @GetMapping("/user/{id}")
-    public String showUserById(@PathVariable Long id, Model model) {
+    public String showUserById(@PathVariable Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUser(id));
+        model.addAttribute("principal", principal);
         return "show_user";
     }
 
     @GetMapping("/user")
     public String showUser(Model model, Principal principal) {
         model.addAttribute("user", userService.loadUserByUsername(principal.getName()));
+        model.addAttribute("principal", principal);
         return "show_user";
     }
 }

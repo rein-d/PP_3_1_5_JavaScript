@@ -5,19 +5,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
+import java.util.HashSet;
 
 @Controller
 @AllArgsConstructor
 public class AdminController {
     private final UserService userService;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
     @GetMapping("/admin")
     public String listUsers(Model model, Principal principal) {
@@ -27,23 +27,22 @@ public class AdminController {
     }
     @PostMapping("/admin")
     public String addUser(@ModelAttribute("user") User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (user.getRoles().isEmpty()) {
-            user.setRoles(roleRepository.getRolesByName("USER"));
+            user.setRoles(new HashSet<>(roleService.getRoles("USER")));
         }
-        userService.addUser(user);
+        userService.saveUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/admin/create")
     public String addUsers(Model model, Principal principal) {
         User user = new User();
-        if (roleRepository.findAll().isEmpty()) {
-            roleRepository.save(new Role("USER"));
-            roleRepository.save(new Role("ADMIN"));
+        if (roleService.getRoles().isEmpty()) {
+            roleService.saveRole(new Role("USER"));
+            roleService.saveRole(new Role("ADMIN"));
         }
         model.addAttribute("user", user);
-        model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("allRoles", roleService.getRoles());
         model.addAttribute("principal", principal);
         return "create_user";
     }
@@ -51,7 +50,7 @@ public class AdminController {
     @GetMapping("/admin/edit/{id}")
     public String editUser(@PathVariable Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("allRoles", roleRepository.findAll());
+        model.addAttribute("allRoles", roleService.getRoles());
         model.addAttribute("principal", principal);
         return "edit_user";
     }
@@ -60,9 +59,9 @@ public class AdminController {
     public String updateUser(@PathVariable Long id,
                              @ModelAttribute("user") User user,
                              Model model) {
-
-        userService.saveUser(id, user.getFirstName(), user.getLastName(), user.getAge(),
-                user.getEmail(), passwordEncoder.encode(user.getPassword()), user.getRoles());
+        user.setId(id);
+        user.getPassword();
+        userService.saveUser(user);
         return "redirect:/admin";
     }
 

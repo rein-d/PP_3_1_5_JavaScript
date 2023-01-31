@@ -2,10 +2,13 @@ package ru.kata.spring.boot_security.demo.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
@@ -17,10 +20,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    //private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getUsers() {
@@ -34,26 +37,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void addUser(User user) {
+    public void saveUser(User user) {
         userRepository.save(user);
-    }
-
-    @Transactional
-    @Override
-    public void saveUser(Long id, String firstName, String lastName, Integer age,
-                         String email, String password, List<Role> roles) {
-        User existingUser = this.getUser(id);
-        if(roles.isEmpty()) {
-            roles.add(roleRepository.getRoleByName("USER"));
-        }
-        existingUser.setId(id);
-        existingUser.setFirstName(firstName);
-        existingUser.setLastName(lastName);
-        existingUser.setAge(age);
-        existingUser.setEmail(email);
-        existingUser.setPassword(password);
-        existingUser.setRoles(roles);
-        userRepository.save(existingUser);
     }
 
     @Transactional
@@ -69,10 +54,14 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return user;
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                mapRolesToAuthorities(user.getRoles())
+        );
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toSet());
     }
 }

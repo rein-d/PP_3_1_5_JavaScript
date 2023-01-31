@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.List;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -24,7 +25,7 @@ public class Role implements GrantedAuthority {
 
     @ManyToMany(mappedBy = "roles")
     @ToString.Exclude
-    private List<User> users;
+    private Set<User> users;
 
     @Override
     public String getAuthority() {

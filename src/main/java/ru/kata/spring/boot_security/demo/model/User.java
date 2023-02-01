@@ -155,26 +155,24 @@ public class User implements UserDetails {
 
         User user = (User) o;
 
-        if (!getId().equals(user.getId())) return false;
+        if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) return false;
         if (getFirstName() != null ? !getFirstName().equals(user.getFirstName()) : user.getFirstName() != null)
             return false;
         if (getLastName() != null ? !getLastName().equals(user.getLastName()) : user.getLastName() != null)
             return false;
         if (getAge() != null ? !getAge().equals(user.getAge()) : user.getAge() != null) return false;
         if (!getEmail().equals(user.getEmail())) return false;
-        if (!getPassword().equals(user.getPassword())) return false;
-        return getRoles() != null ? getRoles().equals(user.getRoles()) : user.getRoles() == null;
+        return getPassword().equals(user.getPassword());
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
+        int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 31 * result + (getAge() != null ? getAge().hashCode() : 0);
         result = 31 * result + getEmail().hashCode();
         result = 31 * result + getPassword().hashCode();
-        result = 31 * result + (getRoles() != null ? getRoles().hashCode() : 0);
         return result;
     }
 }

@@ -15,8 +15,8 @@ public class Role implements GrantedAuthority {
     private Long id;
     @Column(unique = true)
     private String name;
-    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
     public Role(String name) {
         this.name = name;
@@ -56,10 +56,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return getName();
     }
 
     @Override
@@ -69,12 +66,14 @@ public class Role implements GrantedAuthority {
 
         Role role = (Role) o;
 
-        if (!getId().equals(role.getId())) return false;
+        if (getId() != null ? !getId().equals(role.getId()) : role.getId() != null) return false;
         return getName().equals(role.getName());
     }
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + getName().hashCode();
+        return result;
     }
 }

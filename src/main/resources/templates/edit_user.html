@@ -95,8 +95,9 @@
                     type="checkbox"
                     name="roles"
                     th:each="role : ${allRoles}"
-                    th:text=" ${role.name} "
-                    th:value="${role.id}"
+                    th:text="${role.getName()}"
+                    th:id="${role.getId()}"
+                    th:value="${role.getName()}"
                     th:field="*{roles}"
               />
             </label>

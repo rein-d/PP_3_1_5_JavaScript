@@ -2,16 +2,17 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class AdminController {
@@ -33,7 +34,11 @@ public class AdminController {
     @PostMapping("/admin")
     public String addUser(@ModelAttribute("user") User user) {
         if (user.getRoles().isEmpty()) {
-             user.addRole(roleService.getRoleByName("ROLE_USER"));
+            user.addRole(roleService.getRoleByName("ROLE_USER"));
+        } else {
+            for (Role role : user.getRoles()) {
+                user.addRole(roleService.getRoleByName(role.getName()));
+            }
         }
         userService.addUser(user);
         return "redirect:/admin";
@@ -64,7 +69,11 @@ public class AdminController {
     public String updateUser(@PathVariable Long id,
                              @ModelAttribute("user") User user,
                              Model model) {
-        user.setId(id);
+        Set<Role> newRoles = new HashSet<>();
+        for (Role role : user.getRoles()) {
+            newRoles.add(roleService.getRoleByName(role.getName()));
+        }
+        user.setRoles(newRoles);
         userService.updateUser(user);
         return "redirect:/admin";
     }

@@ -34,13 +34,15 @@ public class AdminController {
 
     @PostMapping("/admin")
     public String addUser(@ModelAttribute("user") User user) {
+        Set<Role> newRoles = new HashSet<>();
         if (user.getRoles().isEmpty()) {
-            user.addRole(roleService.getRoleByName("ROLE_USER"));
+            newRoles.add(roleService.getRoleByName("ROLE_USER"));
         } else {
             for (Role role : user.getRoles()) {
-                user.addRole(roleService.getRoleByName(role.getName()));
+                newRoles.add(roleService.getRoleByName(role.getName()));
             }
         }
+        user.setRoles(newRoles);
         userService.addUser(user);
         return "redirect:/admin";
     }

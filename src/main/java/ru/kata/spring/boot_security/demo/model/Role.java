@@ -61,7 +61,9 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return getName();
+        return "Role{" +
+                "name='" + name + '\'' +
+                '}';
     }
 
     @Override
@@ -71,14 +73,11 @@ public class Role implements GrantedAuthority {
 
         Role role = (Role) o;
 
-        if (getId() != null ? !getId().equals(role.getId()) : role.getId() != null) return false;
         return getName().equals(role.getName());
     }
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + getName().hashCode();
-        return result;
+        return getName().hashCode();
     }
 }

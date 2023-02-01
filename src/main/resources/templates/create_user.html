@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,7 +33,7 @@
     <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-around card">
       <h1 class="text-center"> Create new user </h1>
       <div class="card-body">
-        <form th:action="@{/admin}" th:object="${user}" method="post">
+        <form th:action="@{/admin}" th:object="${user}" th:method="POST">
           <div class="form-group">
             <label> First Name </label>
             <input
@@ -96,9 +95,8 @@
                       type="checkbox"
                       name="roles"
                       th:each="role : ${allRoles}"
-                      th:text="${role.getName()}"
-                      th:id="${role.getId()}"
-                      th:value="${role.getName()}"
+                      th:text="${role.name}"
+                      th:value="${role.name}"
                       th:field="*{roles}"
               />
             </label>

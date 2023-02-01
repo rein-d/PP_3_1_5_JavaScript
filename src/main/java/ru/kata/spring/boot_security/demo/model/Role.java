@@ -1,9 +1,14 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToMany;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity

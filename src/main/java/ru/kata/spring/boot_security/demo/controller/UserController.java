@@ -16,6 +16,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping("/user/{id}")
     public String showUserById(@PathVariable Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUser(id));

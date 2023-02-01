@@ -9,7 +9,12 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
     List<User> getUsers();
+
     User getUser(Long id);
-    void saveUser(User user);
+
+    void addUser(User user);
+
+    void updateUser(User user);
+
     void deleteUser(Long id);
 }

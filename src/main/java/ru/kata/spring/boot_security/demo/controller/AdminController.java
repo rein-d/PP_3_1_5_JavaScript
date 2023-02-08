@@ -29,6 +29,7 @@ public class AdminController {
     public String listUsers(Model model, Principal principal) {
         model.addAttribute("users", userService.getUsers());
         model.addAttribute("principal", principal);
+        model.addAttribute("currentUser", (User) userService.loadUserByUsername(principal.getName()));
         return "users";
     }
 

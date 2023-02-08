@@ -101,6 +101,15 @@ public class User implements UserDetails {
         return roles;
     }
 
+    public String getRolesToString() {
+        StringBuilder sb = new StringBuilder();
+        for (Role role :
+                roles) {
+            sb.append(role.getName().substring(5)).append(' ');
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }

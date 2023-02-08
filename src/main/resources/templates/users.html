@@ -13,26 +13,47 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand">User Management System</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/root}">Home</a>
+          <a class="nav-link active" aria-current="page" th:text="${principal.getName()}"></a>
+        </li>
+        <li>
+          <a class="nav-link active" aria-current="page">with roles:</a>
+        </li>
+        <li>
+          <a class="nav-link active" aria-current="page" th:text="${currentUser.getRolesToString()}"></a>
         </li>
       </ul>
-      <a class="navbar-text" th:text="${principal.getName()}"></a>
       <a role="button" class="btn btn-link" th:href="@{/mylogout}">Logout</a>
     </div>
   </div>
 </nav>
 
+<div class="row">
+  <h1 class="text-center">User-table</h1>
+</div>
+
+<div>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" th:href="@{/admin}">Users table</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:href="@{/admin/create}">New User</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled">Disabled</a>
+    </li>
+  </ul>
+</div>
+
 <div class="container">
-  <div class="row">
-    <h1 class="text-center">User-table</h1>
-  </div>
+
 
   <div class="row">
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -41,31 +62,34 @@
   </div>
 
   <div>
-    <table class="table table-dark table-striped">
+    <table class="table table-striped">
       <thead>
       <tr>
+        <th>ID</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>Age</th>
-        <th>EMAIL</th>
-        <th>Action</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </tr>
       </thead>
       <tbody>
       <tr th:each="user: ${users}">
+        <td th:text="${user.getId()}"/>
         <td th:text="${user.getFirstName()}"/>
         <td th:text="${user.getLastName()}"/>
         <td th:text="${user.getAge()}"/>
         <td th:text="${user.getEmail()}"/>
+        <td th:text="${user.getRolesToString()}"/>
         <td>
           <a th:href="@{/admin/edit/{id}(id=${user.id})}"
              class="btn btn-primary">Edit</a>
-
+        </td>
+        <td>
           <a th:href = "@{/admin/delete/{id}(id=${user.id})}"
              class = "btn btn-danger">Delete</a>
-
-          <a th:href = "@{/user/{id}(id=${user.id})}"
-             class = "btn btn-primary">Show</a>
         </td>
       </tr>
       </tbody>

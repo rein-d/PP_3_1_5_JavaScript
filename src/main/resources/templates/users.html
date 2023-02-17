@@ -85,13 +85,37 @@
                                     <td th:text="${user.getEmail()}"/>
                                     <td th:text="${user.getRolesToString()}"/>
                                     <td>
-                                        <a th:href="@{/admin/edit/{id}(id=${user.id})}"
-                                           class="btn btn-primary">Edit</a>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#myModal">Launch
+                                            modal
+                                        </button>
                                     </td>
                                     <td>
-                                        <a th:href="@{/admin/delete/{id}(id=${user.id})}"
-                                           class="btn btn-danger">Delete</a>
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                data-target="#deleteModal">
+                                            Delete
+                                        </button>
                                     </td>
+
+                                    <div class="modal" id="#myModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Modal title</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Modal body text goes here.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tr>
                                 </tbody>
                             </table>
@@ -107,10 +131,11 @@
 
                             <form class="text-center" th:action="@{/admin}" th:object="${user}" th:method="POST">
                                 <div class="mb-3">
-                                    <label for="firstName" class="form-label"> First Name </label>
+                                    <label for="firstName" class="form-label"><strong> First Name </strong></label>
                                     <input
                                             type="text"
                                             id="firstName"
+                                            name="firstName"
                                             class="form-control"
                                             th:field="*{firstName}"
                                             placeholder="Enter First Name"
@@ -118,9 +143,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label> Last Name </label>
+                                    <label for="lastName" class="form-label"><strong> Last Name </strong></label>
                                     <input
                                             type="text"
+                                            id="lastName"
                                             name="lastName"
                                             class="form-control"
                                             th:field="*{lastName}"
@@ -129,20 +155,22 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label> Age </label>
+                                    <label for="age" class="form-label"><strong> Age </strong></label>
                                     <input
                                             type="number"
+                                            id="age"
                                             name="age"
                                             class="form-control"
                                             th:field="*{age}"
-                                            placeholder="Enter Last Name"
+                                            placeholder="Enter Age"
                                     />
                                 </div>
 
                                 <div class="mb-3">
-                                    <label> Email </label>
+                                    <label for="email" class="form-label"><strong> Email </strong></label>
                                     <input
                                             type="email"
+                                            id="email"
                                             name="email"
                                             class="form-control"
                                             th:field="*{email}"
@@ -151,9 +179,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label> Password </label>
+                                    <label for="password" class="form-label"><strong> Password </strong></label>
                                     <input
                                             type="text"
+                                            id="password"
                                             name="password"
                                             class="form-control"
                                             th:field="*{password}"
@@ -162,18 +191,19 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label> Roles:
-                                        <input
-                                                type="checkbox"
-                                                name="roles"
-                                                th:each="role : ${allRoles}"
-                                                th:text="${role.name}"
-                                                th:value="${role.name}"
-                                                th:field="*{roles}"
-                                        />
+                                    <label for="roles" class="form-label"><strong> Roles:</strong>
+                                        <select multiple class="form-control"
+                                                id="roles" name="roles"
+                                                th:size="${allRoles.size()}"
+                                                required>
+                                            <option th:each="role:${allRoles}"
+                                                    th:value="${role.getName()}">
+                                                <th:block th:text="${role.getName()}">
+                                                </th:block>
+                                            </option>
+                                        </select>
                                     </label>
                                 </div>
-
                                 <button type="submit" class="btn btn-success">
                                     Add new user
                                 </button>

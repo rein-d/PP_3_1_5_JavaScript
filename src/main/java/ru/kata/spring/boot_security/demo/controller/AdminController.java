@@ -27,7 +27,14 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String listUsers(Model model, Principal principal) {
+        User user = new User();
+        if (roleService.getRoles().isEmpty()) {
+            roleService.addRole(new Role("ROLE_USER"));
+            roleService.addRole(new Role("ROLE_ADMIN"));
+        }
         model.addAttribute("users", userService.getUsers());
+        model.addAttribute("user", user);
+        model.addAttribute("allRoles", roleService.getRoles());
         model.addAttribute("principal", principal);
         model.addAttribute("currentUser", (User) userService.loadUserByUsername(principal.getName()));
         return "users";

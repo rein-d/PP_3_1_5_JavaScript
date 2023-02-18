@@ -33,7 +33,7 @@ public class AdminController {
             roleService.addRole(new Role("ROLE_ADMIN"));
         }
         model.addAttribute("users", userService.getUsers());
-        model.addAttribute("user", user);
+        model.addAttribute("newUser", user);
         model.addAttribute("allRoles", roleService.getRoles());
         model.addAttribute("principal", principal);
         model.addAttribute("currentUser", (User) userService.loadUserByUsername(principal.getName()));

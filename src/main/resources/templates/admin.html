@@ -25,22 +25,18 @@
 
 <div class="row g-0">
     <div class="col-2">
-        <br>
-        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
-             aria-orientation="vertical">
-            <button class="nav-link active text-start" id="v-pills-home-tab" data-bs-toggle="pill"
-                    data-bs-target="#admin" type="button" role="tab" aria-controls="v-pills-home"
-                    aria-selected="true">Admin
+        <div class="d-grid gap-2">
+            <button class="btn btn-primary" type="button">
+                <a href="/admin" class="list-group-item list-group-item-action active text-start" aria-current="true">Admin</a>
             </button>
-            <button class="nav-link text-start" id="v-pills-profile-tab" data-bs-toggle="pill"
-                    data-bs-target="#user" type="button" role="tab" aria-controls="v-pills-profile"
-                    aria-selected="false">User
+            <button class="btn" type="button">
+                <a href="/admin/user" class="list-group-item text-start" aria-current="true">User</a>
             </button>
         </div>
     </div>
 
     <div class="col-9 bg-light">
-        <div class="container-fluid p-4">
+        <div class="container-fluid p-2">
             <h1 class="text-start">Admin panel</h1>
             <div class="nav nav-tabs p-1" id="nav-tab" role="tablist">
                 <button class="nav-link active" id="nav-admin-tab" data-bs-toggle="tab"
@@ -197,7 +193,8 @@
                                                                         <button type="button" class="btn btn-secondary"
                                                                                 data-bs-dismiss="modal">Close
                                                                         </button>
-                                                                        <button type="submit" class="btn btn-primary">Edit
+                                                                        <button type="submit" class="btn btn-primary">
+                                                                            Edit
                                                                         </button>
                                                                     </div>
                                                                 </form>

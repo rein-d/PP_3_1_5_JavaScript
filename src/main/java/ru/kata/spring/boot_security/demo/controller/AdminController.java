@@ -37,7 +37,7 @@ public class AdminController {
         model.addAttribute("allRoles", roleService.getRoles());
         model.addAttribute("principal", principal);
         model.addAttribute("currentUser", (User) userService.loadUserByUsername(principal.getName()));
-        return "users";
+        return "admin";
     }
 
     @PostMapping("/admin")
@@ -65,7 +65,7 @@ public class AdminController {
         model.addAttribute("user", user);
         model.addAttribute("allRoles", roleService.getRoles());
         model.addAttribute("principal", principal);
-        return "create_user";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/edit/{id}")
@@ -73,7 +73,7 @@ public class AdminController {
         model.addAttribute("user", userService.getUser(id));
         model.addAttribute("allRoles", roleService.getRoles());
         model.addAttribute("principal", principal);
-        return "edit_user";
+        return "redirect:/admin";
     }
 
     @PostMapping("/admin/edit/{id}")
@@ -93,5 +93,12 @@ public class AdminController {
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
+    }
+
+    @GetMapping("/admin/user")
+    public String showUser(Model model, Principal principal) {
+        model.addAttribute("user", userService.loadUserByUsername(principal.getName()));
+        model.addAttribute("principal", principal);
+        return "show_user_admin";
     }
 }

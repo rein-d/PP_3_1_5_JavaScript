@@ -1,11 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -13,9 +9,10 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Controller
+@RestController
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
@@ -26,18 +23,12 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String listUsers(Model model, Principal principal) {
-        User user = new User();
+    public List<User> listUsers(Model model, Principal principal) {
         if (roleService.getRoles().isEmpty()) {
             roleService.addRole(new Role("ROLE_USER"));
             roleService.addRole(new Role("ROLE_ADMIN"));
         }
-        model.addAttribute("users", userService.getUsers());
-        model.addAttribute("newUser", user);
-        model.addAttribute("allRoles", roleService.getRoles());
-        model.addAttribute("principal", principal);
-        model.addAttribute("currentUser", (User) userService.loadUserByUsername(principal.getName()));
-        return "admin";
+        return userService.getUsers();
     }
 
     @PostMapping("/admin")

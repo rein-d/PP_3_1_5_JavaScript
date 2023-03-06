@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("api/v1/admin")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
@@ -22,8 +23,8 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin")
-    public List<User> listUsers(Model model, Principal principal) {
+    @GetMapping
+    public List<User> listUsers() {
         if (roleService.getRoles().isEmpty()) {
             roleService.addRole(new Role("ROLE_USER"));
             roleService.addRole(new Role("ROLE_ADMIN"));
@@ -59,12 +60,9 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/edit/{id}")
-    public String editUser(@PathVariable Long id, Model model, Principal principal) {
-        model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("allRoles", roleService.getRoles());
-        model.addAttribute("principal", principal);
-        return "redirect:/admin";
+    @GetMapping("{id}")
+    public User getUser(@PathVariable Long id) {
+        return userService.getUser(id);
     }
 
     @PostMapping("/admin/edit/{id}")

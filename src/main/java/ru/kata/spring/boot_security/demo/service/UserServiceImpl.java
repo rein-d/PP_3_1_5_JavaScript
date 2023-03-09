@@ -9,18 +9,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.exceptions.NotFoundException;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleService roleService;
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -40,6 +45,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+        Set<Role> newRoles = new HashSet<>();
+        if (user.getRoles().isEmpty()) {
+            newRoles.add(roleService.getRoleByName("ROLE_USER"));
+        } else {
+            for (Role role : user.getRoles()) {
+                newRoles.add(roleService.getRoleByName(role.getName()));
+            }
+        }
+        user.setRoles(newRoles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.add(user);
     }
@@ -60,7 +74,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        User user = getUser(id);
+        userRepository.deleteById(user.getId());
     }
 
     @Transactional

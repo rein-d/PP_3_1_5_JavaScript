@@ -13,6 +13,10 @@ public class RoleServiceImpl implements RoleService {
 
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+        if (getRoles().isEmpty()) {
+            addRole(new Role("ROLE_USER"));
+            addRole(new Role("ROLE_ADMIN"));
+        }
     }
 
     @Override

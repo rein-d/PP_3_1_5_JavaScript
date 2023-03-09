@@ -25,39 +25,7 @@ public class AdminController {
 
     @GetMapping
     public List<User> listUsers() {
-        if (roleService.getRoles().isEmpty()) {
-            roleService.addRole(new Role("ROLE_USER"));
-            roleService.addRole(new Role("ROLE_ADMIN"));
-        }
         return userService.getUsers();
-    }
-
-    @PostMapping("/admin")
-    public String addUser(@ModelAttribute("user") User user) {
-        Set<Role> newRoles = new HashSet<>();
-        if (user.getRoles().isEmpty()) {
-            newRoles.add(roleService.getRoleByName("ROLE_USER"));
-        } else {
-            for (Role role : user.getRoles()) {
-                newRoles.add(roleService.getRoleByName(role.getName()));
-            }
-        }
-        user.setRoles(newRoles);
-        userService.addUser(user);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/admin/create")
-    public String addUsers(Model model, Principal principal) {
-        User user = new User();
-        if (roleService.getRoles().isEmpty()) {
-            roleService.addRole(new Role("ROLE_USER"));
-            roleService.addRole(new Role("ROLE_ADMIN"));
-        }
-        model.addAttribute("user", user);
-        model.addAttribute("allRoles", roleService.getRoles());
-        model.addAttribute("principal", principal);
-        return "redirect:/admin";
     }
 
     @GetMapping("{id}")
@@ -65,8 +33,24 @@ public class AdminController {
         return userService.getUser(id);
     }
 
+    @PostMapping
+    public User addUser(@RequestBody User user) {
+        userService.addUser(user);
+        return user;
+    }
+
+    @PutMapping("{id}")
+    public User updateUser(@RequestBody User user) {
+        userService.updateUser(user);
+        return user;
+    }
+    @DeleteMapping("{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
+
     @PostMapping("/admin/edit/{id}")
-    public String updateUser(@PathVariable Long id,
+    public String updateUserOld(@PathVariable Long id,
                              @ModelAttribute("user") User user,
                              Model model) {
         Set<Role> newRoles = new HashSet<>();
@@ -75,12 +59,6 @@ public class AdminController {
         }
         user.setRoles(newRoles);
         userService.updateUser(user);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/admin/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
         return "redirect:/admin";
     }
 

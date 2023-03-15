@@ -60,6 +60,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void updateUser(User user) {
+        Set<Role> newRoles = new HashSet<>();
+        if (user.getRoles().isEmpty()) {
+            newRoles.add(roleService.getRoleByName("ROLE_USER"));
+        }
+
+        user.setRoles(newRoles);
         if (user.getPassword().isEmpty()) {
             user.setPassword(userRepository.getReferenceById(user.getId()).getPassword());
         } else if (user.getPassword().equals(userRepository.getReferenceById(user.getId()).getPassword())) {

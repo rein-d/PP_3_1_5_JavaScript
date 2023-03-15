@@ -185,18 +185,18 @@
                            class="form-control" disabled>
                     <br/>
                     <label class="form-label fw-bold" for="edit_firstName">
-                        Username</label>
+                        First Name</label>
                     <input th:type="text"
                            id="edit_firstName"
-                           name="username"
+                           name="firstName"
                            placeholder="First Name"
                            class="form-control"/>
                     <br/>
                     <label class="form-label fw-bold" for="edit_lastName">
-                        Username</label>
+                        Last Name</label>
                     <input th:type="text"
                            id="edit_lastName"
-                           name="username"
+                           name="lastName"
                            placeholder="Last Name"
                            class="form-control"/>
                     <br/>
@@ -230,14 +230,14 @@
                             id="edit_roles"
                             size="2">
                         <option value="ADMIN">ADMIN</option>
-                        <option value="USER">USER</option>
+                        <option value="USER" selected>USER</option>
                     </select>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                                 data-bs-dismiss="modal"
                                 id="editFrom_closeButton">Close
                         </button>
-                        <button type="submit"
+                        <button type="button"
                                 id="editForm_editButton"
                                 class="btn btn-primary"
                                 onclick="editUser()">Edit

@@ -33,7 +33,8 @@ public class AdminRestController {
     }
 
     @PatchMapping("{id}")
-    public User updateUser(@RequestBody User user) {
+    public User updateUser(@RequestBody User user, @PathVariable Long id) {
+        user.setId(id);
         userService.updateUser(user);
         return user;
     }

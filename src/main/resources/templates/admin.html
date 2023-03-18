@@ -177,8 +177,7 @@
             </div>
             <div class="modal-body">
                 <form class="text-center" id="editForm">
-                    <label class="form-label fw-bold">ID</label>
-
+                    <label class="form-label fw-bold" for="edit_id">ID</label>
                     <input id="edit_id"
                            name="id"
                            th:type="text"
@@ -225,12 +224,12 @@
                     <br/>
                     <label class="form-label fw-bold">Roles</label>
                     <select multiple
-                            class="form-select form-select-sm"
+                            class="form-control"
                             name="roles"
                             id="edit_roles"
                             size="2">
                         <option value="ADMIN">ADMIN</option>
-                        <option value="USER" selected>USER</option>
+                        <option value="USER">USER</option>
                     </select>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"

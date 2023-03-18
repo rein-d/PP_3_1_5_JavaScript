@@ -55,7 +55,7 @@ public class AdminRestController {
     @PatchMapping("{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
         try {
-            user.setId(id);
+            //user.setId(id);
             userService.updateUser(user);
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {

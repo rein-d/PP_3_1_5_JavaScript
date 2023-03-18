@@ -28,14 +28,11 @@ async function editModal(id) {
 }
 
 async function editUser() {
+
     let urlEdit = 'http://localhost:8080/api/v1/admin/' + edit_id.value;
     let roles = [];
-    if (edit_role_new.length) {
-        for (let i = 0; i < role_new.length; i++) {
-            roles.push("ROLE_" + edit_role_new[i].value);
-        }
-    } else {
-        roles.push("ROLE_USER");
+    for (let i = 0; i < edit_role_new.length; i++) {
+        roles.push("ROLE_" + edit_role_new[i].value);
     }
 
     let method = {
@@ -44,6 +41,7 @@ async function editUser() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
+            id: edit_id.value,
             firstName: editForm.firstName.value,
             lastName: editForm.lastName.value,
             age: editForm.age.value,

@@ -62,10 +62,13 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         Set<Role> newRoles = new HashSet<>();
         if (user.getRoles().isEmpty()) {
-            newRoles.add(roleService.getRoleByName("ROLE_USER"));
+            user.setRoles(userRepository.getReferenceById(user.getId()).getRoles());
+        } else {
+            for (Role role : user.getRoles()) {
+                newRoles.add(roleService.getRoleByName(role.getName()));
+            }
+            user.setRoles(newRoles);
         }
-
-        user.setRoles(newRoles);
         if (user.getPassword().isEmpty()) {
             user.setPassword(userRepository.getReferenceById(user.getId()).getPassword());
         } else if (user.getPassword().equals(userRepository.getReferenceById(user.getId()).getPassword())) {

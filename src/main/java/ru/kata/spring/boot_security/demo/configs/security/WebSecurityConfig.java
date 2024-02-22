@@ -29,10 +29,10 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
 //                                .requestMatchers("/**").permitAll()
-                        .requestMatchers("/", "/mylogout").permitAll()
-                        .requestMatchers("/user/**", "/api/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                                .requestMatchers("/", "/mylogout").permitAll()
+                                .requestMatchers("/user/**", "/api/**").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .successHandler(successUserHandler)
@@ -41,7 +41,6 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -49,5 +48,4 @@ public class WebSecurityConfig {
         authenticationProvider.setUserDetailsService(userService);
         return authenticationProvider;
     }
-
 }

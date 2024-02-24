@@ -1,1 +1,1 @@
-create database books_db;
+create database my_db;
